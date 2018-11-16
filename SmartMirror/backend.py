@@ -21,16 +21,17 @@ class TimeHandler(QObject):
 class WeatherHandler(QObject):
     def __init__(self, context, parent=None):
         super(WeatherHandler, self).__init__(parent)
+        self.APIKEY = "" #Paste your openweathermap api key
         self.win= parent
-        self.r= requests.get("http://api.openweathermap.org/data/2.5/forecast?q=Sceaux,fr&units=metric&APPID=69637d5982d1c0566ba3bdd463f330d5")
+        self.r= requests.get("http://api.openweathermap.org/data/2.5/forecast?q=Sceaux,fr&units=metric&APPID={}".format(self.APIKEY))
         self.text= json.loads(self.r.text)
         self.liste = [self.text["list"][x] for x in range(0, 40, 8)]
-        self.currentr = requests.get("http://api.openweathermap.org/data/2.5/weather?q=Sceaux,fr&units=metric&APPID=69637d5982d1c0566ba3bdd463f330d5")
+        self.currentr = requests.get("http://api.openweathermap.org/data/2.5/weather?q=Sceaux,fr&units=metric&APPID={}".format(self.APIKEY))
         self.currenttext= json.loads(self.currentr.text)
 
     @Slot()
     def reloadFore(self):
-        self.r = requests.get("http://api.openweathermap.org/data/2.5/forecast?q=Sceaux,fr&units=metric&APPID=69637d5982d1c0566ba3bdd463f330d5")
+        self.r = requests.get("http://api.openweathermap.org/data/2.5/forecast?q=Sceaux,fr&units=metric&APPID={}".format(self.APIKEY))
         self.text= json.loads(self.r.text)
         self.liste = [self.text["list"][x] for x in range(0, 40, 8)]
 
@@ -60,7 +61,7 @@ class WeatherHandler(QObject):
 
     @Slot()
     def reloadCurr(self):
-        self.currentr = requests.get("http://api.openweathermap.org/data/2.5/weather?q=Sceaux,fr&units=metric&APPID=69637d5982d1c0566ba3bdd463f330d5")
+        self.currentr = requests.get("http://api.openweathermap.org/data/2.5/weather?q=Sceaux,fr&units=metric&APPID={}".format(self.APIKEY))
         self.currenttext= json.loads(self.currentr.text)
 
     @Slot(result=str)
